@@ -111,6 +111,19 @@ public class SerilogLoggerTests
     [InlineData(LogLevel.Critical, LogLevel.Warning, 0)]
     [InlineData(LogLevel.Critical, LogLevel.Error, 0)]
     [InlineData(LogLevel.Critical, LogLevel.Critical, 1)]
+    [InlineData(LogLevel.None, LogLevel.Trace, 0)]
+    [InlineData(LogLevel.None, LogLevel.Debug, 0)]
+    [InlineData(LogLevel.None, LogLevel.Information, 0)]
+    [InlineData(LogLevel.None, LogLevel.Warning, 0)]
+    [InlineData(LogLevel.None, LogLevel.Error, 0)]
+    [InlineData(LogLevel.None, LogLevel.Critical, 0)]
+    [InlineData(LogLevel.None, LogLevel.None, 0)]
+    [InlineData(LogLevel.Critical, LogLevel.None, 0)]
+    [InlineData(LogLevel.Error, LogLevel.None, 0)]
+    [InlineData(LogLevel.Warning, LogLevel.None, 0)]
+    [InlineData(LogLevel.Information, LogLevel.None, 0)]
+    [InlineData(LogLevel.Debug, LogLevel.None, 0)]
+    [InlineData(LogLevel.Trace, LogLevel.None, 0)]
     public void LogsWhenEnabled(LogLevel minLevel, LogLevel logLevel, int expected)
     {
         var (logger, sink) = SetUp(minLevel);
