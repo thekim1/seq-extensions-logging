@@ -25,7 +25,12 @@ $suffix = @{ $true = ""; $false = "$($branch.Substring(0, [math]::Min(10,$branch
 
 Write-Output "build: Package version suffix is $suffix"
 
-& dotnet build -c Release --version-suffix=$suffix /p:ContinuousIntegrationBuild=true
+if ($suffix) {
+    & dotnet build -c Release --version-suffix=$suffix /p:ContinuousIntegrationBuild=true
+} else {
+    & dotnet build -c Release /p:ContinuousIntegrationBuild=true
+}
+
 if($LASTEXITCODE -ne 0) { throw "Build failed" }
 
 foreach ($src in Get-ChildItem src/*) {
