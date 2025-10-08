@@ -144,9 +144,7 @@ sealed class Logger : ILogEventSink, IDisposable
     /// <returns>True if the level is enabled; otherwise, false.</returns>
     public bool IsEnabled(LogLevel level)
     {
-
-        return _levelSwitch == null ||
-               (int)level >= (int)_levelSwitch.MinimumLevel;
+        return level != LogLevel.None && (_levelSwitch == null || level >= _levelSwitch.MinimumLevel);
     }
 
     /// <summary>
