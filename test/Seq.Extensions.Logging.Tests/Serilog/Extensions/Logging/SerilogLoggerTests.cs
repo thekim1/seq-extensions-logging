@@ -238,7 +238,13 @@ public class SerilogLoggerTests
         Assert.Equal("Hello, {Recipient}", sink.Writes[0].MessageTemplate.Text);
 
         SelfLog.Disable();
-        Assert.Empty(selfLog.ToString());
+        
+        var selfLogContent = selfLog.ToString();
+        if (!string.IsNullOrEmpty(selfLogContent))
+        {
+            // Test failures are hard to diagnose without the full SelfLog entry.
+            throw new Exception(selfLogContent);
+        }
     }
 
     [Fact]
