@@ -15,7 +15,7 @@ env:
 jobs:
   build:
 
-    runs-on: ubuntu-24.04
+    runs-on: windows-latest
 
     permissions:
       contents: write
@@ -25,8 +25,9 @@ jobs:
       - name: Setup
         uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: 8.0.x
+          dotnet-version: 9.0.x
       - name: Compute build number
+        shell: bash
         run: |
           echo "CI_BUILD_NUMBER=$(($CI_BUILD_NUMBER_BASE+130))" >> $GITHUB_ENV
       - name: Build and Publish
