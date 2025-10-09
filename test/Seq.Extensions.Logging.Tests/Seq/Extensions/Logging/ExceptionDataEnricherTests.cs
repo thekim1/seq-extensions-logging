@@ -1,7 +1,5 @@
 ﻿using Seq.Extensions.Logging;
 using Serilog.Events;
-using System;
-using System.Linq;
 using Tests.Support;
 using Xunit;
 
@@ -25,7 +23,7 @@ public class ExceptionDataEnricherTests
     public void WhenDataIsPresentThePropertyIsAdded()
     {
         var enricher = new ExceptionDataEnricher();
-        var exception = new Exception()
+        var exception = new Exception
         {
             Data =
             {

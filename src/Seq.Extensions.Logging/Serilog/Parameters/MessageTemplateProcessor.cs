@@ -12,11 +12,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using System.Diagnostics.CodeAnalysis;
 using Serilog.Core;
 using Serilog.Core.Pipeline;
 using Serilog.Events;
-using Serilog.Parsing;
 
 namespace Serilog.Parameters;
 

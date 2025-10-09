@@ -8,6 +8,7 @@ using Serilog.Sinks.Seq;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging.Configuration;
 using Serilog.Sinks.PeriodicBatching;
+// ReSharper disable UnusedMember.Global
 
 namespace Microsoft.Extensions.Logging;
 
@@ -29,7 +30,7 @@ public static class SeqLoggerExtensions
         if (loggerFactory == null) throw new ArgumentNullException(nameof(loggerFactory));
         if (configuration == null) throw new ArgumentNullException(nameof(configuration));
 
-        if (TryCreateProvider(configuration, LogLevel.Information, Array.Empty<Action<EnrichingEvent>>(), out var provider))
+        if (TryCreateProvider(configuration, LogLevel.Information, [], out var provider))
             loggerFactory.AddProvider(provider);
 
         return loggerFactory;
@@ -137,16 +138,15 @@ public static class SeqLoggerExtensions
         }
 
         var levelOverrides = new Dictionary<string, LogLevel>();
-        foreach (var overr in configuration.GetSection("LevelOverride").GetChildren())
+        foreach (var levelOverride in configuration.GetSection("LevelOverride").GetChildren())
         {
-            LogLevel value;
-            if (!Enum.TryParse(overr.Value, out value))
+            if (!Enum.TryParse(levelOverride.Value, out LogLevel value))
             {
-                SelfLog.WriteLine("The level override setting `{0}` for `{1}` is invalid", overr.Value, overr.Key);
+                SelfLog.WriteLine("The level override setting `{0}` for `{1}` is invalid", levelOverride.Value, levelOverride.Key);
                 continue;
             }
 
-            levelOverrides[overr.Key] = value;
+            levelOverrides[levelOverride.Key] = value;
         }
 
         provider = CreateProvider(serverUrl, apiKey, minimumLevel, levelOverrides, enrichers);
@@ -197,7 +197,7 @@ public static class SeqLoggerExtensions
             var overrides = new Dictionary<string, LoggingLevelSwitch>();
             foreach (var levelOverride in levelOverrides)
             {
-                overrides.Add(levelOverride.Key, new LoggingLevelSwitch(levelOverride.Value));
+                overrides[levelOverride.Key] = new LoggingLevelSwitch(levelOverride.Value);
             }
 
             overrideMap = new LevelOverrideMap(overrides, levelSwitch);
@@ -209,7 +209,7 @@ public static class SeqLoggerExtensions
             Period = TimeSpan.FromSeconds(2),
         });
 
-        var logger = new Logger(batchingSink, new Enricher(enrichers ?? Array.Empty<Action<EnrichingEvent>>()), batchingSink.Dispose, levelSwitch, overrideMap);
+        var logger = new Logger(batchingSink, new Enricher(enrichers ?? []), batchingSink.Dispose, levelSwitch, overrideMap);
         var provider = new SerilogLoggerProvider(logger);
         return provider;
     }

@@ -1,20 +1,27 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading;
-using Serilog.Events;
+﻿using Serilog.Events;
 using Xunit.Sdk;
 using Serilog.Core;
 using Microsoft.Extensions.Logging;
 using Serilog.Parameters;
 // ReSharper disable MemberCanBePrivate.Global
 
-#nullable enable
-
 namespace Tests.Support;
 
 static class Some
 {
+    public static LogEvent EmptyLogEvent()
+    {
+        return new LogEvent(
+            default,
+            default,
+            null,
+            new MessageTemplate("", []),
+            new(),
+            default,
+            default
+        );
+    }
+    
     public static LogEvent LogEvent(string messageTemplate, params object?[] propertyValues)
     {
         return LogEvent(null, messageTemplate, propertyValues);
@@ -25,11 +32,6 @@ static class Some
         return LogEvent(LogLevel.Information, exception, messageTemplate, propertyValues);
     }
 
-    public static ILogEventPropertyFactory PropertyFactory()
-    {
-        return new PropertyValueConverter(10, 1024);
-    }
-
     public static ILogEventPropertyValueFactory PropertyValueFactory()
     {
         return new PropertyValueConverter(10, 1024);
@@ -37,8 +39,9 @@ static class Some
 
     public static LogEvent LogEvent(LogLevel level, Exception? exception, string messageTemplate, params object?[] propertyValues)
     {
-        var log = new Logger(null!, null!, null);
+        var log = new Logger(null!, null!);
 #pragma warning disable Serilog004 // Constant MessageTemplate verifier
+        // ReSharper disable once ConvertIfStatementToReturnStatement
         if (!log.BindMessageTemplate(messageTemplate, propertyValues, out var template, out var properties))
 #pragma warning restore Serilog004 // Constant MessageTemplate verifier
         {

@@ -6,7 +6,6 @@
     <SignAssembly>true</SignAssembly>
     <PublicSign Condition=" '$(OS)' != 'Windows_NT' ">true</PublicSign>
     <RootNamespace>Tests</RootNamespace>
-    <LangVersion>latest</LangVersion>
   </PropertyGroup>
 
   <ItemGroup>

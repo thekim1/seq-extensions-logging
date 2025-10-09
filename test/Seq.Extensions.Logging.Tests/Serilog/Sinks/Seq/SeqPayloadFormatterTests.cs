@@ -1,8 +1,9 @@
-﻿using Serilog.Sinks.Seq;
+﻿using Seq.Extensions.Logging;
+using Serilog.Sinks.Seq;
 using Tests.Support;
 using Xunit;
 
-namespace Seq.Extensions.Logging.Tests.Serilog.Sinks.Seq;
+namespace Tests.Serilog.Sinks.Seq;
 
 public class SeqPayloadFormatterTests
 {
