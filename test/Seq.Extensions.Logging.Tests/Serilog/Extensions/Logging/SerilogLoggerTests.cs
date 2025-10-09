@@ -1,14 +1,10 @@
 ﻿// Copyright (c) .NET Foundation. All rights reserved.
 // Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
-using System;
 using System.Collections;
 using Serilog.Events;
 using Microsoft.Extensions.Logging;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.IO;
-using System.Linq;
 using Xunit;
 using Serilog.Extensions.Logging;
 using Seq.Extensions.Logging;
@@ -34,7 +30,7 @@ public class SerilogLoggerTests
     {
         var sink = new SerilogSink();
 
-        var l = new global::Serilog.Core.Logger(sink, new Enricher(enrichers), null, new global::Serilog.Core.LoggingLevelSwitch(logLevel), null);
+        var l = new global::Serilog.Core.Logger(sink, new Enricher(enrichers), null, new global::Serilog.Core.LoggingLevelSwitch(logLevel));
 
         var provider = new SerilogLoggerProvider(l);
         provider.SetScopeProvider(new LoggerExternalScopeProvider());
@@ -138,9 +134,9 @@ public class SerilogLoggerTests
     {
         var (logger, sink) = SetUp(LogLevel.Trace);
 
-        logger.Log<object>(LogLevel.Information, 0, null, null, null!);
+        logger.Log<object?>(LogLevel.Information, 0, null, null, null!);
         logger.Log(LogLevel.Information, 0, TestMessage, null, null!);
-        logger.Log<object>(LogLevel.Information, 0, null, null, (_, _) => TestMessage);
+        logger.Log<object?>(LogLevel.Information, 0, null, null, (_, _) => TestMessage);
 
         Assert.Equal(3, sink.Writes.Count);
 
@@ -270,7 +266,7 @@ public class SerilogLoggerTests
 
         const int expected = 3;
         
-        logger.Log<KeyValuePair<string, object>[]>(LogLevel.Information, expected, state: [new("EventId", "Something")], exception: null, formatter: (s, e) => "");
+        logger.Log<KeyValuePair<string, object>[]>(LogLevel.Information, expected, state: [new("EventId", "Something")], exception: null, formatter: (_, _) => "");
         
         Assert.Single(sink.Writes);
 
@@ -397,14 +393,14 @@ public class SerilogLoggerTests
     {
         var (logger, sink) = SetUp(
             LogLevel.Trace,
-            (evt) => evt.AddPropertyIfAbsent("EnrichedScalar", true),
-            (evt) => evt.AddPropertyIfAbsent("EnrichedObject", new { a = 1 }, true)
+            evt => evt.AddPropertyIfAbsent("EnrichedScalar", true),
+            evt => evt.AddPropertyIfAbsent("EnrichedObject", new { a = 1 }, true)
         );
 
         logger.Log(LogLevel.Information, 0, TestMessage, null, null!);
 
-        Assert.Equal(true, (sink.Writes[0].Properties["EnrichedScalar"] as ScalarValue).Value);
-        Assert.Equal(1, ((sink.Writes[0].Properties["EnrichedObject"] as StructureValue).Properties[0].Value as ScalarValue).Value);
+        Assert.Equal(true, ((ScalarValue)sink.Writes[0].Properties["EnrichedScalar"]).Value);
+        Assert.Equal(1, ((ScalarValue)((StructureValue)sink.Writes[0].Properties["EnrichedObject"]).Properties[0].Value).Value);
     }
 
     class FoodScope : IEnumerable<KeyValuePair<string, object>>
@@ -450,8 +446,8 @@ public class SerilogLoggerTests
     class Person
     {
         // ReSharper disable once UnusedAutoPropertyAccessor.Local
-        public string FirstName { get; set; }
+        public string? FirstName { get; set; }
         // ReSharper disable once UnusedAutoPropertyAccessor.Local
-        public string LastName { get; set; }
+        public string? LastName { get; set; }
     }
 }

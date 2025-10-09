@@ -13,11 +13,8 @@
     <PackageIcon>icon.png</PackageIcon>
     <PackageProjectUrl>https://github.com/datalust/seq-extensions-logging</PackageProjectUrl>
     <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
-    <LangVersion>latest</LangVersion>
     <RootNamespace />
     <PackageReadmeFile>README.md</PackageReadmeFile>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
   </PropertyGroup>
 
   <ItemGroup>
