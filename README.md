@@ -10,7 +10,7 @@ This package makes it a one-liner to configure ASP.NET Core logging with Seq.
 
 ### Getting started
 
-The instructions that follow are for **.NET 6.0+** web applications.
+The instructions that follow are for **.NET 8.0+** web applications.
 
 Add [the NuGet package](https://nuget.org/packages/seq.extensions.logging) to your project either by editing the CSPROJ file, or using the NuGet package manager:
 
@@ -176,8 +176,10 @@ Seq.Extensions.Logging.SelfLog.Enable(message => {
 ### Versioning policy
 
 The major version of this package tracks the major version of its _Microsoft.Extensions.Logging_ dependency. So, if your
-application (on any target runtime) is targeting `net6.0`, use the latest 6.* version of this package. Likewise, if
-you're targeting `net8.0`, target a 8.* version of _Seq.Extensions.Logging_ for the best experience.
+application (on any target runtime) is targeting `net10.0`, use the latest 10.* version of this package. Likewise, if
+you're targeting `net8.0` or `net9.0`, a 10.* version of _Seq.Extensions.Logging_ targets those runtimes as well.
+Applications on older, out-of-support runtimes can continue to use the matching earlier major versions (e.g. 8.* for
+`net8.0`-only stacks).
 
 ### Credits
 
