@@ -10,7 +10,7 @@ This package makes it a one-liner to configure ASP.NET Core logging with Seq.
 
 ### Getting started
 
-The instructions that follow are for **.NET 6.0+** web applications.
+The instructions that follow are for **.NET 8.0+** web applications.
 
 Add [the NuGet package](https://nuget.org/packages/seq.extensions.logging) to your project either by editing the CSPROJ file, or using the NuGet package manager:
 
