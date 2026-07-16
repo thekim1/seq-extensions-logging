@@ -13,6 +13,7 @@ using Tests.Support;
 
 namespace Tests.Serilog.Extensions.Logging;
 
+[Collection("SelfLog")]
 public class SerilogLoggerTests
 {
     static SerilogLoggerTests()

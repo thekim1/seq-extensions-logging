@@ -6,6 +6,7 @@ using Xunit;
 
 namespace Tests.Seq.Extensions.Logging;
 
+[Collection("SelfLog")]
 public class EnricherTests
 {
     [Fact]
